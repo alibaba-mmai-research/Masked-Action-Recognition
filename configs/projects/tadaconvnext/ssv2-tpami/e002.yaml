@@ -1,0 +1,36 @@
+# from e210_flip
+_BASE: ../msm_ssv2.yaml
+TRAIN:
+  CHECKPOINT_PERIOD: 5
+  FINE_TUNE: true
+  CHECKPOINT_FILE_PATH: /projects/pretrained/resnet-50/resnet50-for-temporaladaptivespatialconv-2dstem.pyth
+OSS:
+  CHECKPOINT_OUTPUT_PATH: /projects/msm/ssv2-tpami/e002/
+OPTIMIZER:
+  BASE_LR: 0.48
+  ADJUST_LR: false
+  LR_POLICY: cosine
+  MAX_EPOCH: 64
+  MOMENTUM: 0.9
+  WEIGHT_DECAY: 1e-4
+  WARMUP_EPOCHS: 4
+  WARMUP_START_LR: 0.0001
+  OPTIM_METHOD: sgd
+  DAMPENING: 0.0
+  NESTEROV: true
+VIDEO:
+  BACKBONE:
+    STEM:
+      NAME: Base2DStem
+    BRANCH:
+      NAME: TemporalAdaptiveSpatialConvBlockCinAdaptiveWithGlobalInfo
+      NORM_LAYER: groupnorm
+    NUM_FILTERS: [64, 256, 512, 1024, 2048]
+    NUM_OUT_FEATURES: 2048
+    NUM_INPUT_CHANNELS: 3
+    EXPANSION_RATIO: 4
+    INITIALIZATION: kaiming
+DATA:
+  NUM_INPUT_FRAMES: 8
+AUGMENTATION: 
+  SSV2_FLIP: true

@@ -1,0 +1,32 @@
+# result file
+output
+
+# cache
+*__pycache__*
+
+# tmp
+tmp*
+
+# vscode
+.vscode/
+
+# checkpoints
+checkpoints
+
+# notebooks
+*.ipynb
+
+# debug
+debug/
+
+# dinger
+yaml
+.dinger*
+.polyaxonignore
+
+# archived
+archived
+*.pyth
+*.log
+output/
+process_cpkt.py

@@ -1,0 +1,252 @@
+TASK_TYPE: classification
+PRETRAIN:
+  ENABLE: false
+TRAIN:
+  ENABLE: false
+  DATASET:                          # !!@1
+  BATCH_SIZE: 128
+  LOG_FILE: training_log.log
+  EVAL_PERIOD: 10
+  NUM_FOLDS: 1
+  AUTO_RESUME: true
+  CHECKPOINT_PERIOD: 10
+  CHECKPOINT_FILE_PATH: ""          # !!@2
+  CHECKPOINT_TYPE: pytorch
+  CHECKPOINT_INFLATE: false
+  CHECKPOINT_PRE_PROCESS:
+    ENABLE: false
+    POP_HEAD: false
+    POS_EMBED: 
+    PATCH_EMBD: 
+    POP_SPECTROGRAM_EXTRACTOR: false
+  AUDIO_REDUCE_RATE: 1.0
+  FINE_TUNE: false
+  ONLY_LINEAR: false
+  LR_REDUCE: false
+  TRAIN_VAL_COMBINE: false
+  MIXED_PRECISION: false
+TEST:
+  ENABLE: false                      # !!@3
+  DATASET:                          # !!@3
+  BATCH_SIZE: 100
+  NUM_SPATIAL_CROPS: 1
+  SPATIAL_CROPS: cc
+  NUM_ENSEMBLE_VIEWS: 1
+  LOG_FILE: val.log
+  CHECKPOINT_FILE_PATH: ""
+  SAVE_PREDS: false
+  SAVE_PREDS_PATH: "preds.pyth"
+  SAVE_RESULTS_PATH: "preds.log"
+  CHECKPOINT_TYPE: pytorch
+  AUTOMATIC_MULTI_SCALE_TEST: true 
+  ZERO_SHOT: false
+SUBMISSION:
+  ENABLE: false
+LINEAR_EVALUATION:
+  ENABLE: false
+  LOG_FILE: retrieval.log
+  TRAIN_ENSEMBLE_METHOD: avg
+  CLASSIFICATION: false
+  RETRIEVAL: false
+  VIDEO_GROUNDING: false
+  GROUNDING_CLIP_INTERVAL: 4
+  MULTI_MODAL: 
+    ENABLE: false
+MM_RETRIEVAL:
+  ENABLE: false
+VISUALIZATION:
+  ENABLE: false                     # !!@4
+  NAME:                             # !!@4
+  GRAD_CAM:
+    ENABLE: true
+    COLOR_MAP: jet
+    USE_LABELS: true
+    LAYERS: conv5
+  FEATURE_MAPS:
+    ENABLE: false
+DATA:
+  DATA_ROOT_DIR: /data/volume1/videos       # !!@5
+  ANNO_DIR: /data/hmdb51/anno_lists/
+  NUM_INPUT_FRAMES: 16
+  NUM_INPUT_CHANNELS: 3
+  SAMPLING_MODE: interval_based
+  SAMPLING_RATE: 4
+  TRAIN_JITTER_SCALES: [168, 224]
+  TRAIN_CROP_SIZE: 112
+  TEST_SCALE: 224
+  TEST_CROP_SIZE: 112
+  MEAN: [0.45, 0.45, 0.45]
+  STD: [0.225, 0.225, 0.225]
+  MULTI_LABEL: false
+  SPLIT_ID: 1
+  ENSEMBLE_METHOD: sum
+  FPS: 30
+  TARGET_FPS: 30
+  MINUS_INTERVAL: true
+  CLIP_INTERVAL: 0
+MODEL:
+  NAME: 
+  EMA:
+    ENABLE: false
+    DECAY: 0.99996
+    CHANGE_WITH_LR: false
+VIDEO:
+  ENABLE: true
+  BACKBONE:
+    DEPTH: 
+    META_ARCH: 
+    NUM_FILTERS: 
+    NUM_INPUT_CHANNELS: 3
+    NUM_OUT_FEATURES: 
+    KERNEL_SIZE: 
+    DOWNSAMPLING: 
+    DOWNSAMPLING_TEMPORAL: 
+    NUM_STREAMS: 1
+    EXPANSION_RATIO: 2
+    BRANCH:
+      NAME: 
+    STEM:
+      NAME: 
+    NONLOCAL:
+      ENABLE: false
+      STAGES: [5]
+      MASK_ENABLE: false
+    INITIALIZATION: 
+  HEAD:
+    NAME: BaseHead
+    ACTIVATION: softmax
+    DROPOUT_RATE: 0
+    NUM_CLASSES:              # !!!
+    PRE_BN: false
+    MLP:
+      MID_DIM: 1024
+      OUT_DIM: 512
+      MID_BN: true
+      FINAL_BN: false
+TEXT:
+  ENABLE: false
+  CAPTION_DOWNLOAD: true
+  CAPTION_ROOT_DIR: 
+  DICT_PATH: 
+  WORD_EMBED_PATH: 
+  HEAD:
+    NAME: TextEmbeddingHead
+    MID_DIM: 2048
+    OUT_DIM: 512
+  NUM_SENTENCES: 5
+  MAX_WORDS: 16
+  WORD_EMBEDDING_DIM: 300
+AUDIO:
+  ENABLE: false
+  META_ARCH:
+  HEAD:
+    NAME:
+OPTIMIZER:
+  ADJUST_LR: false
+  BASE_LR: 0.002
+  MIN_LR: 0
+  LR_POLICY: cosine
+  MAX_EPOCH: 300
+  MOMENTUM: 0.9
+  WEIGHT_DECAY: 1e-3
+  WARMUP_EPOCHS: 10
+  WARMUP_START_LR: 0.0002
+  OPTIM_METHOD: adam
+  DAMPENING: 0.0
+  NESTEROV: true
+  BIAS_DOUBLE: false
+  HEAD_LRMULT: 5
+  CUSTOM_LRMULT: 1.0
+  CLIP_GRAD_VAL: 
+  CLIP_GRAD_L2NORM: 
+  BIAS_LR_MULT: 1.0
+  LAYER_LRDECAY:
+    ENABLE: false
+    DECAY_WEIGHT: 0.75
+BN:
+  WB_LOCK: false
+  FREEZE: false
+  WEIGHT_DECAY: 0.0
+  MOMENTUM: 0.1
+  EPS: 1e-5
+  SYNC_BN: false
+DATA_LOADER:
+  NUM_WORKERS: 4
+  PIN_MEMORY: false
+  ENABLE_MULTI_THREAD_DECODE: true
+  COLLATE_FN: 
+DETECTION:
+  ENABLE: false
+TENSORBOARD:
+  ENABLE: false
+NUM_GPUS: 8
+SHARD_ID: 0
+NUM_SHARDS: 1
+RANDOM_SEED: 0
+OUTPUT_DIR: output/test
+OUTPUT_CFG_FILE: configuration.log
+LOG_PERIOD: 10
+DIST_BACKEND: nccl
+DEBUG_MODE: false
+LOG_MODEL_INFO: true
+LOG_CONFIG_INFO: true
+OSS:
+  ENABLE: false
+  KEY:
+  SECRET:    
+  ENDPOINT: 
+  CHECKPOINT_OUTPUT_PATH:                   # !!@7
+  SECONDARY_DATA_OSS: 
+    ENABLE: false
+    KEY:
+    SECRET: 
+    ENDPOINT: 
+    BUCKETS: []
+VOLUME:
+  ENABLE: false
+AUGMENTATION:
+  SSV2_FLIP: false
+  COLOR_AUG: false
+  BRIGHTNESS: 0.5
+  CONTRAST: 0.5
+  SATURATION: 0.5
+  HUE: 0.25
+  GRAYSCALE: 0.3
+  CONSISTENT: true
+  SHUFFLE: true
+  GRAY_FIRST: true
+  IS_SPLIT: false
+  RATIO: [0.857142857142857, 1.1666666666666667]
+  USE_GPU: false
+  MIXUP: 
+    ENABLE: false
+    ALPHA: 0.0
+    PROB: 1.0
+    MODE: batch
+    SWITCH_PROB: 0.5
+  CUTMIX: 
+    ENABLE: false
+    ALPHA: 0.0
+    MINMAX: 
+  RANDOM_ERASING:
+    ENABLE: false
+    PROB: 0.25
+    MODE: const
+    COUNT: [1, 1]
+    NUM_SPLITS: 0
+    AREA_RANGE: [0.02, 0.33]
+    MIN_ASPECT: 0.3
+  AUTOAUGMENT:
+    ENABLE: false
+    BEFORE_CROP: false
+    TYPE: rand-m9-mstd0.5-inc1
+  LABEL_SMOOTHING: 0.0
+  BATCH_AUG:
+    ENABLE: false
+    NUM_CLIPS_PER_VIDEO: 2
+
+PAI: true
+JIUDING: false
+MULTI_CARD: false
+PRE_DOWNLOAD:
+  ENABLE: false

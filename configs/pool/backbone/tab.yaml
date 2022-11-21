@@ -1,0 +1,15 @@
+MODEL:
+  NAME: TemporalAggregateNet
+  SYNC_BN: false
+  
+VIDEO:
+  INPUT_FEATURE: vivit
+  NUM_INPUT_VIEWS: 1
+  NON_LOCAL:
+    DROPOUT: 0.1
+  SK_SCALES: [3, 5, 7]
+  RK_SCALE: 4
+  RK_LENGTH_TOTAL: 24
+  RK_LENGTH_EACH: 16
+  HEAD:
+    NUM_CLASSES: 

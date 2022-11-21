@@ -1,0 +1,33 @@
+MODEL:
+  NAME: tsn_vit_base
+  SYNC_BN: false
+VIDEO:
+  BACKBONE:
+    META_ARCH: VisionTransformer
+    NUM_FEATURES: 768
+    NUM_OUT_FEATURES: 768
+    TUBELET_SIZE: 2
+    PATCH_SIZE: 16
+    DEPTH: 12
+    NUM_HEADS: 12
+    DIM_HEAD: 64
+    ATTN_DROPOUT: 0.0
+    FF_DROPOUT: 0.0
+    DROP_PATH: 0.1
+    MLP_MULT: 4
+    STEM:
+      NAME: TubeletEmbeddingStem
+    BRANCH:
+      NAME: BaseTransformerLayer
+  HEAD:
+    NAME: TransformerHead
+    ACTIVATION: softmax
+    DROPOUT_RATE: 0
+    NUM_CLASSES:              # !!!
+    PRE_LOGITS: false
+TRAIN:
+  CHECKPOINT_PRE_PROCESS:
+    ENABLE: true
+    POP_HEAD: true
+    POS_EMBED: 
+    PATCH_EMBD: central_frame

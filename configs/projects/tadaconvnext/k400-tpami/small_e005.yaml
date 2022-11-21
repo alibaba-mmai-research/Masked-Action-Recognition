@@ -1,0 +1,77 @@
+# from tiny_e025
+_BASE: ../tada_convnext_small_k400.yaml
+TRAIN:
+  ENABLE: true
+  FINE_TUNE: false
+  BATCH_SIZE: 8
+  IMAGENET_INIT: true
+  LR_REDUCE: true
+  CHECKPOINT_FILE_PATH: "/projects/tada_convnext_small_tpami/k400/small_e005/checkpoint_epoch_00080.pyth"
+TEST:
+  BATCH_SIZE: 16
+DATA:
+  SAMPLING_RATE: 2
+  NUM_INPUT_FRAMES: 32
+  TRAIN_JITTER_SCALES: [0.08, 1.0]
+OSS:
+  CHECKPOINT_OUTPUT_PATH: /projects/tada_convnext_small_tpami/k400/small_e005/
+OPTIMIZER:
+  BASE_LR: 2e-4
+  ADJUST_LR: false
+  LR_POLICY: cosine
+  MAX_EPOCH: 100
+  MOMENTUM: 0.9
+  WEIGHT_DECAY: 1e-3
+  WARMUP_EPOCHS: 8
+  WARMUP_START_LR: 0.000001
+  OPTIM_METHOD: adamw
+  DAMPENING: 0.0
+  NESTEROV: true
+  HEAD_LRMULT: 10
+VIDEO:
+  BACKBONE:
+    DROP_PATH: 0.4
+    BRANCH:
+      ROUTE_FUNC_TYPE: normal_lngelu
+    STEM:
+      T_KERNEL_SIZE: 3
+      CENTRAL_INIT: true
+AUGMENTATION:
+  COLOR_AUG: false
+  BRIGHTNESS: 0.5
+  CONTRAST: 0.5
+  SATURATION: 0.5
+  HUE: 0.25
+  GRAYSCALE: 0.3
+  CONSISTENT: true
+  SHUFFLE: true
+  GRAY_FIRST: true
+  IS_SPLIT: false
+  USE_GPU: false
+  SSV2_FLIP: true
+  RATIO: [0.75, 1.333]
+  MIXUP: 
+    ENABLE: false
+    ALPHA: 0.8
+    PROB: 1.0
+    MODE: batch
+    SWITCH_PROB: 0.5
+  CUTMIX: 
+    ENABLE: false
+    ALPHA: 1.0
+    MINMAX: 
+  RANDOM_ERASING:
+    ENABLE: false
+    PROB: 0.25
+    MODE: pixel
+    COUNT: [1, 1]
+    NUM_SPLITS: 0
+    AREA_RANGE: [0.02, 0.33]
+    MIN_ASPECT: 0.3
+  LABEL_SMOOTHING: 0.
+  AUTOAUGMENT:
+    ENABLE: true
+    BEFORE_CROP: true
+    TYPE: rand-m7-n4-mstd0.5-inc1
+RANDOM_SEED: 42
+MULTI_CARD: false

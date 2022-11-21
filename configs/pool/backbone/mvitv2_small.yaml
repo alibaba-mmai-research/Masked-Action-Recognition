@@ -1,0 +1,44 @@
+MODEL:
+  NAME: mvit
+  SYNC_BN: false
+  
+VIDEO:
+  BACKBONE:
+    USE_CLS_TOKEN: false
+    SEP_POS_EMBED: true
+    INIT_APPROACH: "trunc_normal_"
+    META_ARCH: MultiScaleVisionTransformer
+    NUM_OUT_FEATURES: 768
+    STEM:
+      NAME: MvitEmbeddingStem
+      EMBED_DIM: 96
+      KERNEL_SIZE: [3, 7, 7]
+      STRIDE: [2, 4, 4]
+    NUM_FEATURES: 96
+    DEPTH: 16
+    NUM_HEADS: 1
+    ATTN_DROPOUT: 0.0
+    FF_DROPOUT: 0.0
+    DROP_PATH: 0.2
+    MLP_MULT: 4
+    REGULAR_MLP_MULT: true
+    RESIDUAL_POOLING: true
+    RELATIVE_POS_EMBED: false
+
+    DIM_MUL: [[1, 2.0], [3, 2.0], [14, 2.0]]
+    HEAD_MUL: [[1, 2.0], [3, 2.0], [14, 2.0]]
+    POOL_KVQ_KERNEL: [3, 3, 3]
+    POOL_KV_STRIDE_ADAPTIVE: [1, 8, 8]
+    POOL_Q_STRIDE: [[1, 1, 2, 2], [3, 1, 2, 2], [14, 1, 2, 2]]
+    QKV_BIAS: true
+
+  HEAD:
+    NAME: TransformerHead
+    ACTIVATION: softmax
+    DROPOUT_RATE: 0
+    NUM_CLASSES:              # !!!
+    PRE_LOGITS: false
+TRAIN:
+  CHECKPOINT_PRE_PROCESS:
+    ENABLE: true
+    POP_HEAD: true

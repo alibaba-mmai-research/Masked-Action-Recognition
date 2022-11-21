@@ -1,0 +1,148 @@
+PRETRAIN:
+  ENABLE: true
+  GENERATOR: ContrastiveGenerator            # !!@8
+  LOSS: Contrastive
+  CONT_LOSS: nce
+  DEBUG: false
+  LOSS_WEIGHTS: [1]
+  NUM_CLIPS_PER_VIDEO: 2
+  CONTRASTIVE:
+    TEMPERATURE: 0.07
+    DROPOUT: 0.0
+    SYMMETRIC: false
+    LABEL_SMOOTH_FACTOR: 0.0
+    WITH_ONE: true
+TRAIN:
+  ENABLE: true
+  DATASET:                          # !!@1
+  BATCH_SIZE: 64
+  LOG_FILE: training_log.log
+  EVAL_PERIOD: 0
+  NUM_FOLDS: 1
+  AUTO_RESUME: true
+  CHECKPOINT_PERIOD: 10
+  CHECKPOINT_FILE_PATH: ""          # !!@2
+  CHECKPOINT_TYPE: pytorch
+  CHECKPOINT_INFLATE: false
+  FINE_TUNE: false
+  ONLY_LINEAR: false
+  LR_REDUCE: false
+MODEL:
+  NAME: ContrastiveModel
+  SYNC_BN: true
+  
+VIDEO:
+  HEAD:
+    NAME: VideoMLPHead
+    ACTIVATION: 
+    DROPOUT_RATE: 0
+    NUM_CLASSES:              # !!!
+    MLP:
+      MID_DIM: 1024
+      OUT_DIM: 512
+      MID_BN: true
+      FINAL_BN: false
+TEST:
+  ENABLE: false                     # !!@3
+  DATASET:                          # !!@3
+  BATCH_SIZE: 128
+  NUM_SPATIAL_CROPS: 1
+  SPATIAL_CROPS: cc
+  NUM_ENSEMBLE_VIEWS: 1
+  LOG_FILE: val.log
+  TEST_SET: val
+  CHECKPOINT_FILE_PATH: ""
+  SAVE_RESULTS_PATH: "preds.log"
+  CHECKPOINT_TYPE: pytorch
+  AUTOMATIC_MULTI_SCALE_TEST: false
+VISUALIZATION:
+  ENABLE: false                     # !!@4
+  NAME:                             # !!@4
+  GRAD_CAM:
+    ENABLE: true
+    COLOR_MAP: jet
+    USE_LABELS: true
+    LAYERS: conv5
+  FEATURE_MAPS:
+    ENABLE: false
+DATA:
+  # default on Kinetics
+  DATA_ROOT_DIR: /data/kinetics400_fb/
+  ANNO_DIR: /data/kinetics400_fb/
+  NUM_INPUT_FRAMES: 16
+  NUM_INPUT_CHANNELS: 3
+  SAMPLING_MODE: interval_based
+  SAMPLING_RATE: 4
+  TRAIN_JITTER_SCALES: [168, 224]
+  TRAIN_CROP_SIZE: 112
+  TEST_SCALE: 224
+  TEST_CROP_SIZE: 112
+  MEAN: [0.45, 0.45, 0.45]
+  STD: [0.225, 0.225, 0.225]
+  MULTI_LABEL: false
+  SPLIT_ID: 1
+  ENSEMBLE_METHOD: sum
+  FPS: 30
+  TARGET_FPS: 30
+LINEAR_EVALUATION:
+  ENABLE: false
+OPTIMIZER:
+  BASE_LR: 0.001
+  ADJUST_LR: true
+  LR_POLICY: cosine
+  MAX_EPOCH: 50
+  MOMENTUM: 0.9
+  WEIGHT_DECAY: 1e-4
+  WARMUP_EPOCHS: 5
+  WARMUP_START_LR: 0.0001
+  OPTIM_METHOD: adam
+  DAMPENING: 0.0
+  NESTEROV: true
+BN:
+  WEIGHT_DECAY: 0.0
+  SYNC_BN: true
+DATA_LOADER:
+  NUM_WORKERS: 4
+  PIN_MEMORY: false
+DETECTION:
+  ENABLE: false
+TENSORBOARD:
+  ENABLE: false
+NUM_GPUS: 8
+SHARD_ID: 0
+NUM_SHARDS: 1
+RANDOM_SEED: 0
+OUTPUT_DIR: output/test
+OUTPUT_CFG_FILE: configuration.log
+LOG_PERIOD: 10
+DIST_BACKEND: nccl
+DEBUG_MODE: false
+LOG_MODEL_INFO: true
+LOG_CONFIG_INFO: true
+OSS:
+  ENABLE: true
+  KEY:
+  SECRET:   
+  ENDPOINT:
+  MODEL_BUCKET:
+  CHECKPOINT_OUTPUT_PATH:                   # !!@7
+  SECONDARY_DATA_OSS: 
+    ENABLE: true
+    KEY:
+    SECRET:
+    ENDPOINT: 
+    BUCKETS: []
+AUGMENTATION:
+  BRIGHTNESS: 0.8
+  CONTRAST: 0.8
+  SATURATION: 0.8
+  HUE: 0.2
+  GRAYSCALE: 0.2
+  COLOR: 0.8
+  CONSISTENT: true
+  SHUFFLE: true
+  RATIO: [1, 1]
+  USE_GPU: true
+PAI: true
+PRE_DOWNLOAD:
+  ENABLE: false

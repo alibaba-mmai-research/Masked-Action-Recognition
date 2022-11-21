@@ -1,0 +1,39 @@
+MODEL:
+  NAME: X3DM
+  SYNC_BN: false
+  
+VIDEO:
+  BACKBONE:
+    DEPTH: M
+    META_ARCH: X3D
+    NUM_FILTERS: [24, 24, 48, 96, 192]
+    NUM_INPUT_CHANNELS: 3
+    NUM_OUT_FEATURES: 432
+    KERNEL_SIZE: [
+      [5, 3, 3],
+      [3, 3, 3],
+      [3, 3, 3],
+      [3, 3, 3],
+      [3, 3, 3]
+    ]
+    DOWNSAMPLING: [true, true, true, true, true]
+    DOWNSAMPLING_TEMPORAL: [false, false, false, false, false]
+    NUM_STREAMS: 1
+    EXPANSION_RATIO: 2.25
+    BRANCH:
+      NAME: X3DBranch
+      SE_RATIO: 0.0625
+      SWISH: true
+    STEM:
+      NAME: X3DStem
+    NONLOCAL:
+      ENABLE: false
+      STAGES: [5]
+      MASK_ENABLE: false
+  HEAD:
+    NAME: X3DHead
+    ACTIVATION: softmax
+    DROPOUT_RATE: 0
+    NUM_CLASSES:              # !!!
+    MID_CHANNEL: 2048
+    BN: False

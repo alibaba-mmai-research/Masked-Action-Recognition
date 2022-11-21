@@ -1,0 +1,47 @@
+MODEL:
+  NAME: VideoTextModel
+  SYNC_BN: true
+  
+VIDEO:
+  BACKBONE:
+    META_ARCH: Inception3D
+    NUM_OUT_FEATURES: 1024
+    NUM_STREAMS: 1
+    BRANCH:
+      NAME: STConv3d
+      GATING: true
+    STEM:
+      NAME: STConv3d
+    NONLOCAL:
+      ENABLE: false
+      STAGES: [5]
+      MASK_ENABLE: false
+  HEAD:
+    NAME: VideoMLPHead
+    ACTIVATION: softmax
+    DROPOUT_RATE: 0
+    NUM_CLASSES:              # !!!
+    MLP:
+      MID_DIM: 1024
+      OUT_DIM: 512
+      MID_BN: true
+      FINAL_BN: false
+TEXT:
+  ENABLE: true
+  CAPTION_DOWNLOAD: true
+  CAPTION_ROOT_DIR: 
+  DICT_PATH: 
+  WORD_EMBED_PATH: 
+  HEAD:
+    NAME: TextEmbeddingHead
+    MID_DIM: 2048
+    OUT_DIM: 512
+    MID_LN: false
+  NUM_SENTENCES: 5
+  MAX_WORDS: 16
+  WORD_EMBEDDING_DIM: 300
+AUDIO:
+  ENABLE: false
+  META_ARCH:
+  HEAD:
+    NAME:

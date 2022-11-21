@@ -1,0 +1,40 @@
+MODEL:
+  NAME: vivit
+  SYNC_BN: false
+  
+VIDEO:
+  BACKBONE:
+    META_ARCH: PoolTransformer
+    NUM_FEATURES: 64
+    NUM_OUT_FEATURES: 512
+    PATCH_SIZE: 16
+    TUBELET_SIZE: 2
+    DEPTH: 12
+    EMBEDDING_DIMS: [64, 128, 320, 512]
+    EMBEDDING_LAYERS: [2, 2, 6, 2]
+    EMBEDDING_MLP_MULT: [4, 4, 4, 4]
+    EMBEDDING_POOL_SIZE: [3, 3, 3, 3]
+    DOWN_SAMPLES: [false, false, false, false]
+    ATTN_DROPOUT: 0.0
+    FF_DROPOUT: 0.0
+    DROP_PATH: 0.1
+    POOL_SIZE: 3
+    LAYER_SCALE:
+      ENABLE: true
+      INIT_VALUE: 1e-5
+    STEM:
+      NAME: TubeletEmbeddingStem
+    BRANCH:
+      NAME: PoolTransformerBlock
+  HEAD:
+    NAME: TransformerHeadPool
+    ACTIVATION: softmax
+    DROPOUT_RATE: 0
+    NUM_CLASSES:              # !!!
+    PRE_LOGITS: false
+TRAIN:
+  CHECKPOINT_PRE_PROCESS:
+    ENABLE: true
+    POP_HEAD: true
+    POS_EMBED: 
+    PATCH_EMBD: central_frame

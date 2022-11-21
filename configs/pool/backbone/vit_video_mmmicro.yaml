@@ -1,0 +1,32 @@
+MODEL:
+  NAME: vit_video
+  SYNC_BN: false
+  
+VIDEO:
+  BACKBONE:
+    META_ARCH: JointTransformer
+    NUM_FEATURES: 64
+    NUM_OUT_FEATURES: 64
+    PATCH_SIZE: 32
+    TUBELET_SIZE: 4
+    DEPTH: 2
+    NUM_HEADS: 4
+    DIM_HEAD: 16
+    ATTN_DROPOUT: 0.0
+    FF_DROPOUT: 0.0
+    DROP_PATH: 0.
+    MLP_MULT: 4
+    INIT_APPROACH: xavier
+    USE_CLS_TOKEN: false
+    POS_EMBD_LEARNABLE: false
+    STEM:
+      NAME: TubeletEmbeddingStem
+    BRANCH:
+      NAME: BaseTransformerLayer
+  HEAD:
+    NAME: TransformerHead
+    ACTIVATION: softmax
+    DROPOUT_RATE: 0
+    NUM_CLASSES:              # !!!
+    PRE_LOGITS: false
+    INIT_STD: 2e-5

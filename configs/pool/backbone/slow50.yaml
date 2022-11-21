@@ -1,0 +1,39 @@
+MODEL:
+  NAME: R3D
+  SYNC_BN: false
+
+VIDEO:
+  BACKBONE:
+    DEPTH: 50
+    META_ARCH: ResNet3D
+    ACTIVATION: ReLU
+    NUM_FILTERS: [64, 256, 512, 1024, 2048]
+    NUM_INPUT_CHANNELS: 3
+    NUM_OUT_FEATURES: 2048
+    KERNEL_SIZE: [
+        [1, 7, 7],
+        [1, 3, 3],
+        [1, 3, 3],
+        [3, 3, 3],
+        [3, 3, 3]
+    ]
+    DOWNSAMPLING: [true, false, true, true, true]
+    DOWNSAMPLING_TEMPORAL: [false, false, false, false, false]
+    NUM_STREAMS: 1
+    EXPANSION_RATIO: 4
+    BRANCH:
+      NAME: R3DBranch
+    STEM:
+      NAME: DownSampleStem
+    NONLOCAL:
+      ENABLE: false
+      STAGES: [5]
+      MASK_ENABLE: false
+  HEAD:
+    NAME: BaseHead
+    ACTIVATION: softmax
+    DROPOUT_RATE: 0
+    NUM_CLASSES:              # !!!
+DATA:
+  NUM_INPUT_FRAMES: 8
+  SAMPLING_RATE: 8

@@ -1,0 +1,41 @@
+MODEL:
+  NAME: MSNet
+  SYNC_BN: false
+  
+VIDEO:
+  BACKBONE:
+    ACTIVATION: ReLU
+    DEPTH: 50
+    META_ARCH: ResNet3D
+    NUM_FILTERS: [32, 64, 128, 256, 512]
+    NUM_INPUT_CHANNELS: 3
+    NUM_OUT_FEATURES: 512
+    KERNEL_SIZE: [
+      [3, 7, 7],
+      [3, 3, 3],
+      [3, 3, 3],
+      [3, 3, 3],
+      [3, 3, 3]
+    ]
+    DOWNSAMPLING: [true, true, true, true, true]
+    DOWNSAMPLING_TEMPORAL: [false, false, false, false, false]
+    NUM_STREAMS: 1
+    EXPANSION_RATIO: 2
+    BRANCH:
+      NAME: MSMBranch
+      ENABLE_MSM: true
+      MIX_KERNEL: 7
+      NUM_HEADS: 4
+      PATCHWISE: false
+      OUTPUT: add # "cat" or "add"
+    STEM:
+      NAME: Base3DStem
+    NONLOCAL:
+      ENABLE: false
+      STAGES: [5]
+      MASK_ENABLE: false
+  HEAD:
+    NAME: BaseHead
+    ACTIVATION: softmax
+    DROPOUT_RATE: 0
+    NUM_CLASSES:              # !!!

@@ -1,0 +1,82 @@
+MODEL:
+  NAME: TAda2D
+TRAIN:
+  CHECKPOINT_PRE_PROCESS:
+    ENABLE: true
+    POP_HEAD: false
+    POS_EMBED: 
+    PATCH_EMBD: 
+    POP_SPECTROGRAM_EXTRACTOR: true
+VIDEO:
+  ENABLE: true
+  BACKBONE:
+    DEPTH: 50
+    META_ARCH: AudioVisualResNet
+    NUM_FILTERS: [64, 256, 512, 1024, 2048]
+    NUM_INPUT_CHANNELS: 3
+    NUM_OUT_FEATURES: 2048
+    KERNEL_SIZE: [
+      [1, 7, 7],
+      [1, 3, 3],
+      [1, 3, 3],
+      [1, 3, 3],
+      [1, 3, 3]
+    ]
+    DOWNSAMPLING: [true, true, true, true, true]
+    DOWNSAMPLING_TEMPORAL: [false, false, false, false, false]
+    FUSION_FROM_AUDIO: 
+      ENABLE: [false, false, false, false]
+    NUM_STREAMS: 1
+    EXPANSION_RATIO: 4
+    INITIALIZATION: kaiming
+    STEM:
+      NAME: Base2DAVStem
+    BRANCH:
+      NAME: BaselineAVBlock
+      ROUTE_FUNC_K: [3, 3]
+      ROUTE_FUNC_R: 4
+      POOL_K: [3, 1, 1]
+      ONLY_VIDEO_FEATURE: false
+    NONLOCAL:
+      ENABLE: false
+      STAGES: [5]
+      MASK_ENABLE: false
+  HEAD:
+    NAME: BaseAVHead
+    ACTIVATION: softmax
+    DROPOUT_RATE: 0.5
+    NUM_CLASSES:              # !!!
+AUDIO:
+  ENABLE: true
+  SAMPLE_RATE: 16000
+  DROPOUT_RATE: 0.2
+  PAD_MODE: "zero" # zero or resize
+  TEMPORAL_JITTER: 0.0 # 0.0 seconds
+  BACKBONE:
+    NUM_INPUT_CHANNELS: 1
+    NUM_OUT_FEATURES: 2048
+    DOWNSAMPLING_TEMPORAL: [true, true, true, true, true]
+    DOWNSAMPLING_MEL: [false, true, true, true, true]
+    FUSION_FROM_VIDEO: 
+      ENABLE: [false, false, false, false]
+      KERNEL_SIZE: 3
+    KERNEL_SIZE: [
+      [3, 3],
+      [3, 3],
+      [3, 3],
+      [3, 3],
+      [3, 3]
+    ]
+    STEM:
+      WINDOW_SIZE: 1024
+      HOP_LENGTH: 160
+      MEL_BINS: 64
+      FRANGE: [50, 8000]
+  HEAD:
+    DOWNSAMPLING_MEL: true
+    DOWNSAMPLING_TEMPORAL: true
+  AUGMENTATION:
+    TIME_DROP_WIDTH: 14
+    TIME_STRIPES_NUM: 0
+    FREQ_DROP_WIDTH: 4
+    FREQ_STRIPES_NUM: 2
