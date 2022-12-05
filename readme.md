@@ -40,7 +40,7 @@ See [GUIDELINES.md](https://github.com/alibaba-mmai-research/TAdaConv/blob/main/
 
 # Getting Pre-trained Checkpoints
 You can download the Video-MAE pre-trained checkpoints from [here](https://github.com/MCG-NJU/VideoMAE/blob/main/MODEL_ZOO.md).
-Next please use this simple python script to convert the pre-trained checkpoints to adapt to our code base.
+Next please use this simple [python script](playground/convert_videomae.py) to convert the pre-trained checkpoints to adapt to our code base.
 Then you need modify the `TRAIN.CHECKPOINT_FILE_PATH` to the converted checkpoints for fine-tuning.
 
 
