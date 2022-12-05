@@ -38,6 +38,12 @@ optional requirements
 The general pipeline for using this repo is the installation, data preparation and running.
 See [GUIDELINES.md](https://github.com/alibaba-mmai-research/TAdaConv/blob/main/GUIDELINES.md).
 
+# Getting Pre-trained Checkpoints
+You can download the Video-MAE pre-trained checkpoints from [here](https://github.com/MCG-NJU/VideoMAE/blob/main/MODEL_ZOO.md).
+Next please use this simple python script to convert the pre-trained checkpoints to adapt to our code base.
+Then you need modify the `TRAIN.CHECKPOINT_FILE_PATH` to the converted checkpoints for fine-tuning.
+
+
 # Running instructions
 <!-- To train the model with MAR, set the `_BASE_RUN` to point to `configs/pool/run/training/simclr.yaml`. See `configs/projects/hico/simclr_*_s3dg.yaml` for more details. Alternatively, you can also find some pre-trained model in the `MODEL_ZOO.md`. -->
 
