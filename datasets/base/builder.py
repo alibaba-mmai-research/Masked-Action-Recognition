@@ -11,7 +11,7 @@ from torch.utils.data._utils.collate import default_collate
 from torch.utils.data.distributed import DistributedSampler
 from torch.utils.data.sampler import RandomSampler
 
-from datasets.utils.collate_functions import COLLATE_FN_REGISTRY
+from dataset.utils.collate_functions import COLLATE_FN_REGISTRY
 
 
 from utils.registry import Registry

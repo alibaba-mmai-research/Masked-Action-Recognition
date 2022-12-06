@@ -20,9 +20,9 @@ import utils.bucket as bu
 from utils.meters import TrainMeter, ValMeter
 
 from models.base.builder import build_model, build_agent
-from datasets.base.builder import build_loader, shuffle_dataset
+from dataset.base.builder import build_loader, shuffle_dataset
 
-from datasets.utils.mixup import Mixup
+from dataset.utils.mixup import Mixup
 
 logger = logging.get_logger(__name__)
 
@@ -138,7 +138,7 @@ def train_epoch(
         loss_in_parts = {}
         with torch.cuda.amp.autocast(enabled=cfg.TRAIN.MIXED_PRECISION):
             model_output = model(inputs)
-            loss_model, loss_in_parts_model = losses.Loss_MaeCls(cfg, agent_output, model_output, None, labels, cur_epoch + cfg.TRAIN.NUM_FOLDS * float(cur_iter) / data_size)
+            loss_model, loss_in_parts_model = losses.Loss_MaeCls(cfg, model_output, None, labels, cur_epoch + cfg.TRAIN.NUM_FOLDS * float(cur_iter) / data_size)
 
         loss_in_parts.update(loss_in_parts_model)
         # check Nan Loss.
@@ -366,9 +366,11 @@ def train(cfg):
         from time import sleep
         sleep(3.0)
         misc.log_agent_model_info(agent, model, cfg, use_train_input=True)
-
-    model_bucket_name = cfg.OSS.CHECKPOINT_OUTPUT_PATH.split('/')[2]
-    model_bucket = bu.initialize_bucket(cfg.OSS.KEY, cfg.OSS.SECRET, cfg.OSS.ENDPOINT, model_bucket_name)
+    if cfg.OSS.ENABLE:
+        model_bucket_name = cfg.OSS.CHECKPOINT_OUTPUT_PATH.split('/')[2]
+        model_bucket = bu.initialize_bucket(cfg.OSS.KEY, cfg.OSS.SECRET, cfg.OSS.ENDPOINT, model_bucket_name)
+    else:
+        model_bucket = None
 
     # Construct the optimizer.
     optimizer_model = optim.construct_optimizer(model, cfg)

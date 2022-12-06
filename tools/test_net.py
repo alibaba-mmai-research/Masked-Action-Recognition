@@ -14,7 +14,7 @@ import utils.checkpoint as cu
 import utils.distributed as du
 import utils.logging as logging
 import utils.misc as misc
-from datasets.base.builder import build_loader
+from dataset.base.builder import build_loader
 from models.base.builder import build_model, build_agent
 from utils.meters import TestMeter, EpicKitchenMeter
 

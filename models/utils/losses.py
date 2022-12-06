@@ -12,7 +12,7 @@ import utils.misc as misc
 import utils.distributed as du
 
 from einops import rearrange, repeat
-from datasets.utils.mixup import label_smoothing
+from dataset.utils.mixup import label_smoothing
 SSL_LOSSES = Registry("SSL_Losses")
 
 class SoftTargetCrossEntropy(nn.Module):
@@ -133,6 +133,19 @@ def calculate_loss(cfg, inputs, model_preds, logits, labels, cur_epoch):
         loss_in_parts["ce_loss"] = loss
     return loss, loss_in_parts, weight
 
+
+def Loss_MaeCls(cfg, preds, logits, labels, cur_epoch=0):
+    if 'preds_pixel' in preds:
+        loss_mae = nn.MSELoss(reduction='none')(preds['preds_pixel'], preds['labels_pixel'])
+    else:
+        loss_mae = torch.Tensor([0]).to(preds['preds_pixel'].device())
+    if 'supervised_mixup' in labels:
+        loss_cls = SoftTargetCrossEntropy(reduction='none')(preds['preds_cls'][0], labels['supervised_mixup'])
+    else:
+        loss_cls = nn.CrossEntropyLoss(reduction='none')(preds['preds_cls'][0], labels['supervised_mixup'])
+    loss_in_parts = {"loss_mae": loss_mae.mean(), "loss_cls": loss_cls.mean()}
+    total_loss = loss_mae.mean() * cfg.TRAIN.MAE.MAE_LOSS_WEIGHT + loss_cls.mean()
+    return total_loss, loss_in_parts
 
 
 def construct_logits_with_gradient(cur_logits, all_logits, batch_size_per_gpu, samples):

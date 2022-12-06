@@ -1,6 +1,6 @@
 
 #!/usr/bin/env python3
-""" BaseVideoDataset object to be extended for specific datasets. """
+""" BaseVideoDataset object to be extended for specific dataset. """
 
 import os
 import random
@@ -24,7 +24,7 @@ decord.bridge.set_bridge('torch')
 import matplotlib.pyplot as plt
 
 from torchvision.transforms import Compose
-from datasets.utils.transformations import ColorJitter, CustomResizedCropVideo
+from dataset.utils.transformations import ColorJitter, CustomResizedCropVideo
 
 import utils.bucket as bu
 
@@ -34,8 +34,8 @@ logger = logging.get_logger(__name__)
 
 class BaseVideoDataset(torch.utils.data.Dataset):
     """
-    The BaseVideoDataset object provides a base object for all the video/image/video-text datasets.
-    Abstract methods are provided for completion in the specific datasets.
+    The BaseVideoDataset object provides a base object for all the video/image/video-text dataset.
+    Abstract methods are provided for completion in the specific dataset.
     Necessary methods for all datasets such as "_decode_video", "_decode_image", 
     "__getitem__" (with standard procedure for loading the data) as well as sampling methods 
     such as "_interval_based_sampling" and "_segment_based_sampling" are implemented. 

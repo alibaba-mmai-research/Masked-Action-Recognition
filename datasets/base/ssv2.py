@@ -16,18 +16,18 @@ import oss2 as oss
 from torchvision.transforms import Compose
 import torchvision.transforms._transforms_video as transforms
 import torch.nn.functional as F
-from datasets.utils.transformations import (
+from dataset.utils.transformations import (
     ColorJitter, CustomResizedCropVideo, 
     AutoResizedCropVideo,
     KineticsResizedCrop
 )
 
-from datasets.base.base_dataset import BaseVideoDataset
+from dataset.base.base_dataset import BaseVideoDataset
 
 import utils.bucket as bu
 
-from datasets.base.builder import DATASET_REGISTRY
-from datasets.utils.random_erasing import RandomErasing
+from dataset.base.builder import DATASET_REGISTRY
+from dataset.utils.random_erasing import RandomErasing
 
 logger = logging.get_logger(__name__)
 
@@ -101,7 +101,7 @@ class Ssv2(BaseVideoDataset):
                 ),]
             # Add color aug
             if self.cfg.AUGMENTATION.AUTOAUGMENT.ENABLE:
-                from datasets.utils.auto_augment import creat_auto_augmentation
+                from dataset.utils.auto_augment import creat_auto_augmentation
                 std_transform_list.append(creat_auto_augmentation(self.cfg.AUGMENTATION.AUTOAUGMENT.TYPE, self.cfg.DATA.TRAIN_CROP_SIZE, self.cfg.DATA.MEAN))
             elif self.cfg.AUGMENTATION.COLOR_AUG:
                 std_transform_list.append(
