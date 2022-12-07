@@ -417,7 +417,7 @@ def train(cfg):
 
         # Save a checkpoint.
         if cu.is_checkpoint_epoch(cfg, cur_epoch+cfg.TRAIN.NUM_FOLDS-1):
-            cu.save_checkpoint_dqn(cfg.OUTPUT_DIR, model, model_ema, agent, optimizer_model, cur_epoch+cfg.TRAIN.NUM_FOLDS-1, cfg, model_bucket, scaler if cfg.TRAIN.MIXED_PRECISION else None)
+            cu.save_checkpoint(cfg.OUTPUT_DIR, model, model_ema, optimizer_model, cur_epoch+cfg.TRAIN.NUM_FOLDS-1, cfg, model_bucket, scaler if cfg.TRAIN.MIXED_PRECISION else None)
         if misc.is_eval_epoch(cfg, cur_epoch+cfg.TRAIN.NUM_FOLDS-1):
             val_meter.set_model_ema_enabled(False)
             eval_epoch(val_loader, model, agent, val_meter, cur_epoch+cfg.TRAIN.NUM_FOLDS-1, cfg)
